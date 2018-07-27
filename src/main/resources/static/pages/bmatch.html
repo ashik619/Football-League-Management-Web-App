@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<div class="w3-container w3-display-container w3-center" ng-show="showMatchB">
+    <h3><b>Match B</b></h3>
+    <div class="w3-display-topright">
+        <a href="./matchTwoBanner.html" target="_blank">
+            <i class="material-icons " style="font-size:48px;color:red">open_in_new</i>
+        </a>
+        <br>
+        Open Real-Time Score Board
+    </div>
+    <b>{{matchB.matchType}}</b>
+    <div class="w3-row w3-center" style="width: 70%;margin: 0 auto">
+        <div class="w3-half w3-center">
+            <img height="30" width="30" ng-src="{{matchB.aTeam.team_logo_url}}">
+            <h5><b>{{matchB.aTeam.team_name}}</b></h5>
+        </div>
+        <div class="w3-half w3-center">
+            <img height="30" width="30" ng-src="{{matchB.bTeam.team_logo_url}}">
+            <h5><b>{{matchB.bTeam.team_name}}</b></h5>
+        </div>
+    </div>
+    <p>Match Date : <b>{{matchB.matchDate | date}}</b></p>
+    <h6>Status</h6>
+    <b>Match {{matchB.matchStatus}}</b>
+    <div class="w3-row w3-center" style="width: 70%;margin: 0 auto">
+        <div class="w3-half w3-center">
+            <p id="aTeamGoals"></p>
+            <button class="w3-btn w3-red w3-margin w3-round" ng-click="addAteamGoal()">+</button>
+            <button class="w3-btn w3-red w3-margin w3-round" ng-click="decAteamGoal()">-</button>
+        </div>
+        <div class="w3-half w3-center">
+            <p id="bTeamGoals"></p>
+            <button class="w3-btn w3-red w3-round w3-margin" ng-click="addBteamGoal()">+</button>
+            <button class="w3-btn w3-red w3-margin w3-round" ng-click="decBteamGoal()">-</button>
+        </div>
+    </div>
+    <button class="w3-btn w3-red w3-margin w3-round-large" ng-show="!showFinishMatch" ng-click = "showFinishMatch = !showFinishMatch">Finish Match</button>
+    <div class="w3-center" ng-show="showFinishMatch">
+        <p>
+            <label class="w3-text-red"><b>Select Result</b></label>
+            <br>
+            <select class="w3-select w3-border" ng-model="result" ng-options="idx as result for (idx, result) in results" style="width:65%;">
+            </select>
+        </p>
+        <button class="w3-btn w3-red w3-margin w3-round-large" ng-click="finishMatch()">Finish Match</button>
+    </div>
+</div>
+<div class="w3-container w3-center" ng-show="!showMatchB">
+    <h5>Match B not started</h5>
+</div>
+</html>

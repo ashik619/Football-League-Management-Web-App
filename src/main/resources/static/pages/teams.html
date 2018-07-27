@@ -1,0 +1,33 @@
+<html>
+<body>
+    <h3><b>Teams's</b></h3>
+    <table class="w3-table w3-striped">
+        <tr ng-repeat="team in teams">
+            <td>{{ team.team_name }}</td>
+            <td>{{ team.group.group_name}}</td>
+            <td><img height="30" width="30" ng-src="{{team.team_logo_url}}"></td>
+            <td><button class="w3-btn w3-red w3-round-large" ng-click = "deleteTeam(team.id)">Delete</button></td>
+        </tr>
+    </table>
+    <br>
+    <form class="w3-container w3-card" >
+        <h3>Add New Team</h3>
+        <p>
+            <label class="w3-text-red"><b>Group</b></label>
+            <select class="w3-select w3-border " ng-model="selectedGroup" ng-options="group as group.group_name for group in groups">
+            </select>
+        </p>
+        <p>
+            <label class="w3-text-red"><b>Team Name</b></label>
+            <input class="w3-input w3-border" type="text" ng-model="new_group_name">
+        </p>
+        <p>
+            <label class="w3-text-red"><b>Team logo</b></label>
+            <input class="w3-input w3-border" type="file" onchange="teamLogoFile()" id="teamFileId" name="files[]"/>
+        </p>
+        <p>
+            <button class="w3-btn w3-red" ng-click = "addGroup()">Add Team</button>
+        </p>
+    </form>
+</body>
+</html>

@@ -5,6 +5,7 @@ import com.ashik619.testproject.models.Group;
 import com.ashik619.testproject.models.HttpRespMessage;
 import com.ashik619.testproject.models.Team;
 import com.ashik619.testproject.repositories.GroupRepository;
+import com.ashik619.testproject.repositories.MatchRepository;
 import com.ashik619.testproject.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -18,8 +19,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/team")
 public class TeamController {
+
     @Autowired
     TeamRepository teamRepository;
+
+    @Autowired
+    MatchRepository matchRepository;
 
     @Autowired
     GroupRepository groupRepository;
@@ -68,6 +73,18 @@ public class TeamController {
         }
     }
 
+    @GetMapping("/getByGroup/{gId}")
+    @ResponseBody
+    public ResponseEntity<?> getTeamByGroup(@PathVariable(value = "gId") Long gId) {
+        try {
+            List<Team> teamList = teamRepository.getTeamsByGroup(gId);
+            return new  ResponseEntity<>(teamList,HttpStatus.OK );
+        }catch (DataAccessException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new HttpRespMessage(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/finishMatch")
     @ResponseBody
     public ResponseEntity<?> finishMatch(@PathVariable(value = "id") Long id, @RequestBody Map<String, Object> body) {
@@ -98,6 +115,28 @@ public class TeamController {
             }
         }else {
             return new ResponseEntity<>(new HttpRespMessage("Team not found"),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @DeleteMapping("/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<HttpRespMessage> deleteTeam(@PathVariable(value = "id") Long id){
+        Optional<Team> teamOptional = teamRepository.findById(id);
+        if(!teamOptional.isPresent()){
+            return new ResponseEntity<>(new HttpRespMessage("team not found"),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        try {
+            int resp = matchRepository.deleteMatchByTeam(id);
+        }catch (DataAccessException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new HttpRespMessage(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        try {
+            teamRepository.deleteById(id);
+            return new ResponseEntity<>(new HttpRespMessage("team deleted"),HttpStatus.OK);
+        }catch (DataAccessException e){
+            return new ResponseEntity<>(new HttpRespMessage(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

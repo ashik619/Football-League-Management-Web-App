@@ -1,0 +1,28 @@
+<html>
+<body>
+    <h3><b>Group's</b></h3>
+    <ul class="w3-ul">
+        <li ng-repeat="group in groups" class="w3-display-container">{{group.group_name}}
+            <span ng-click="deleteGrp($index)" class="w3-button w3-transparent w3-display-right">&times;
+            </span>
+        </li>
+    </ul>
+    <form class="w3-container w3-card" >
+        <h3>Add New Group</h3>
+        <p>
+        <label class="w3-text-red"><b>Group Name</b></label>
+        <input class="w3-input w3-border" type="text" ng-model="new_group_name">
+        </p>
+        <p>
+        <button class="w3-btn w3-red" ng-click = "addGroup()">Add Group</button>
+        </p>
+    </form>
+    <!--<div id="id01" class="w3-modal">-->
+        <!--<div class="w3-modal-content w3-card w3-round-large w3-padding-48">-->
+            <!--<div class="w3-container w3-center">-->
+                <!--<button class="w3-btn w3-red w3-margin" ng-click = "delete()">Delete Group</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+</body>
+</html>

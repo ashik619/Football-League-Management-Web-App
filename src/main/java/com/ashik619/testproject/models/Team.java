@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "teams")
 public class Team {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -18,7 +18,7 @@ public class Team {
     private String team_logo_url;
 
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "groupId", nullable = false)
     private Group group;
 

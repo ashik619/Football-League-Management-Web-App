@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase-database.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-teal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <style>
+      .w3-font {
+        font-family: 'Do Hyeon', sans-serif;
+      }
+      .w3-goal-card{
+        margin: auto;
+        width: 50%;
+        border: 3px solid green;
+        padding: 10px;
+      }
+    </style>
+</head>
+<body ng-app="bannerTwoApp" ng-controller="bannerTwoCtrl" >
+<!-- header -->
+<div class="w3-container w3-white">
+    <div class="w3-center">
+        <h1 class="w3-font w3-text-teal" style="font-size: 50px" id="leagueName"></h1>
+        <img height="160" width="160" id="leagueLogoImg"/>
+    </div>
+</div>
+<div class="w3-container w3-section w3-center" ng-show="showMatch">
+    <div class="w3-card-4  w3-twothird w3-padding-16" style="float: none; margin: 0 auto; width: 85% !important;">
+        <h1 class="w3-font w3-text-green">Todays Match</h1>
+        <div class="w3-row w3-margin-bottom">
+            <div class="w3-quarter w3-container">
+                <h1 class="w3-font w3-text-brown" style="font-size: 40px">{{match.aTeam.team_name}}</h1>
+                <img height="100" width="100" ng-src="{{match.aTeam.team_logo_url}}"/>
+            </div>
+            <div class="w3-half w3-container">
+                <br>
+                <br>
+                <br>
+                <h1 id="aTeamGoal" class="w3-third w3-font w3-text-red" style="font-size: 60px"></h1>
+                <h1 class="w3-third w3-font w3-text-dark-gray">:</h1>
+                <h1 id="bTeamGoal" class="w3-third w3-font w3-text-red" style="font-size: 60px"></h1>
+            </div>
+            <div class="w3-quarter w3-container">
+                <h1 id="bTeamName" class="w3-font w3-text-brown" style="font-size: 40px">{{match.bTeam.team_name}}</h1>
+                <img height="100" width="100" ng-src="{{match.bTeam.team_logo_url}}"/>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="id01" class="w3-modal">
+    <div class="w3-modal-content w3-yellow w3-card-4 w3-animate-zoom " style="height=500px; min-width=800px; min-height: 500px;">
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <div class="w3-display-middle w3-center">
+            <img height="150" width="150" src="https://firebasestorage.googleapis.com/v0/b/corporate-super-league.appspot.com/o/soccer.png?alt=media&token=ab127e75-ffa7-4068-a0d4-575da6dd6a85"/>
+            <h1 class="w3-font w3-text-red " style="font-size: 80px">Goal!</h1>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="js/bannerTwo.js"></script>
+</html>

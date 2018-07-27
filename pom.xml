@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.ashik619</groupId>
-	<artifactId>test-project</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>soccer-league-management-app</artifactId>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>test-project</name>
-	<description>Demo project for Spring Boot</description>
+	<name>soccer-league-management-app</name>
+	<description>Manage your soccer league</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

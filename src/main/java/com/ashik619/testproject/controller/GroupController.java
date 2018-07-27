@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/group")
@@ -19,6 +20,7 @@ public class GroupController {
 
     @Autowired
     GroupRepository groupRepository;
+
 
     @GetMapping("/getAll")
     @ResponseBody
@@ -34,6 +36,22 @@ public class GroupController {
         try {
             groupRepository.save(group);
             return new ResponseEntity<>(new HttpRespMessage("Team Added"),HttpStatus.OK);
+        }catch (DataAccessException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new HttpRespMessage(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<HttpRespMessage> deleteGroup(@PathVariable(value = "id") Long id){
+        Optional<Group> groupOptional = groupRepository.findById(id);
+        if(!groupOptional.isPresent()){
+            return new ResponseEntity<>(new HttpRespMessage("group not found"),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        try {
+            groupRepository.deleteById(id);
+            return new ResponseEntity<>(new HttpRespMessage("group deleted"),HttpStatus.OK);
         }catch (DataAccessException e){
             e.printStackTrace();
             return new ResponseEntity<>(new HttpRespMessage(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);

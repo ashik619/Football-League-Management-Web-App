@@ -21,6 +21,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/match")
 public class MatchController {
+
     @Autowired
     MatchRepository matchRepository;
 
@@ -40,6 +41,32 @@ public class MatchController {
         }
 
     }
+    @GetMapping("/getAllRunning")
+    @ResponseBody
+    public ResponseEntity<?> getAllRunningMatches() {
+        try {
+            List<Match> matchList = matchRepository.getRunningMatches();
+            return new  ResponseEntity<>(matchList,HttpStatus.OK );
+        }catch (DataAccessException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new HttpRespMessage(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @GetMapping("/getRunning/{slot}")
+    @ResponseBody
+    public ResponseEntity<?> getAllRunningMatcheBySlot(@PathVariable(value = "slot") String slot) {
+        try {
+            List<Match> matchList = matchRepository.getRunningMatchesBySlot(slot);
+            return new  ResponseEntity<>(matchList,HttpStatus.OK );
+        }catch (DataAccessException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new HttpRespMessage(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
     @GetMapping("/get/{id}")
     @ResponseBody
     public ResponseEntity<?> getTeamById(@PathVariable(value = "id") Long id) {
@@ -96,19 +123,35 @@ public class MatchController {
             return new ResponseEntity<>(new HttpRespMessage("match not found"),HttpStatus.INTERNAL_SERVER_ERROR);
         }
         Match match = matchOptional.get();
+        String slot = null;
         switch (body.getType()){
             case "startMatch" :{
-                switch (match.getMatchStatus()){
-                    case "scheduled" :{
-                        match.setMatchStatus("running");
-                        break;
+                List<Match> matchList = matchRepository.getRunningMatches();
+                if(matchList==null||matchList.size()<2) {
+                    switch (match.getMatchStatus()) {
+                        case "scheduled": {
+                            if(matchList==null||matchList.size()==0)
+                                slot = "A";
+                            else if(matchList.size() == 1) {
+                                if(matchList.get(0).getMatchSlot().equals("B")){
+                                    slot = "A";
+                                }else {
+                                    slot = "B";
+                                }
+                            }
+                            match.setMatchStatus("running");
+                            match.setMatchSlot(slot);
+                            break;
+                        }
+                        case "running": {
+                            return new ResponseEntity<>(new HttpRespMessage("match already started"), HttpStatus.INTERNAL_SERVER_ERROR);
+                        }
+                        case "finished": {
+                            return new ResponseEntity<>(new HttpRespMessage("match already finished"), HttpStatus.INTERNAL_SERVER_ERROR);
+                        }
                     }
-                    case "running":{
-                        return new ResponseEntity<>(new HttpRespMessage("match already started"),HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
-                    case "finished":{
-                        return new ResponseEntity<>(new HttpRespMessage("match already finished"),HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
+                }else {
+                    return new ResponseEntity<>(new HttpRespMessage("Only two matches can be started at a time. Finish other matches to start"), HttpStatus.INTERNAL_SERVER_ERROR);
                 }
                 break;
             }
@@ -130,6 +173,10 @@ public class MatchController {
                 }
                 Team aTeam = aTeamOptional.get();
                 Team bTeam = bTeamOptional.get();
+                aTeam.setGoals_scored(body.getaGoals());
+                aTeam.setGoals_conceded(body.getbGoals());
+                bTeam.setGoals_scored(body.getbGoals());
+                bTeam.setGoals_conceded(body.getaGoals());
                 switch (body.getResult()){
                     case "AW":{
                         aTeam.setWin_count(aTeam.getWin_count()+1);
@@ -164,7 +211,11 @@ public class MatchController {
         }
         try {
             matchRepository.save(match);
-            return new ResponseEntity<>(new HttpRespMessage("match updated"),HttpStatus.OK);
+            HttpRespMessage httpRespMessage = new HttpRespMessage("match updated");
+            if(slot!=null){
+                httpRespMessage.setData(slot);
+            }
+            return new ResponseEntity<>(httpRespMessage,HttpStatus.OK);
         }catch (DataAccessException e){
             e.printStackTrace();
             return new ResponseEntity<>(new HttpRespMessage(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
@@ -184,6 +235,13 @@ public class MatchController {
             e.printStackTrace();
             return new ResponseEntity<>(new HttpRespMessage(e.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+
+    @RequestMapping(value = "/bannerOne", method = RequestMethod.GET)
+    public String getMatchABanner() {
+        return "matchOneBanner";
+
     }
 
 

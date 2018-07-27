@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+        <div class="w3-container">
+            <h5><b class="w3-text-red">League Name</b></h5>
+            <b id="leagueName"></b>
+            <br>
+            <button class="w3-btn w3-red w3-round-large w3-small" ng-show ="!nameEdit" ng-click = "nameEdit = !nameEdit" >Set/Edit</button>
+            <div ng-show="nameEdit" >
+                <p>
+                    <label class="w3-text-red"><b>Enter League Name</b></label>
+                    <input class="w3-input w3-border" type="text" ng-model="new_league_name">
+                    <br>
+                    <button class="w3-btn w3-red w3-round-large w3-small" ng-click = "updateName()" >Update</button>
+                </p>
+            </div>
+            <br>
+            <br>
+            <h5><b class="w3-text-red">League Logo</b></h5>
+            <img height="100" width="100" id="leagueLogo">
+            <br>
+            <br>
+            <button class="w3-btn w3-red w3-round-large w3-small" ng-show ="!leagueLogoEdit" ng-click = "leagueLogoEdit = !leagueLogoEdit" >Add/Edit</button>
+            <div ng-show="leagueLogoEdit" >
+                <p>
+                    <input class="w3-input w3-border" type="file" onchange="leagueLogoUpload()" id="leagueLogoFileId" name="files[]"/>
+                    <br>
+                    <button class="w3-btn w3-red w3-round-large w3-small" ng-click = "updateLeagueLogo()" >Update</button>
+                </p>
+            </div>
+            <br>
+            <br>
+            <h5><b class="w3-text-red">Branding and Advertisement</b></h5>
+            Upload branding and advertisement images to be shown in Scoreboards
+            <br>
+            <br>
+            Logo1
+            <br>
+            <img height="100" width="100" id="brandLogo1">
+            <br>
+            <button class="w3-btn w3-red w3-round-large w3-small" ng-show ="!logo1Edit" ng-click = "logo1Edit = !logo1Edit" >Add/Edit</button>
+            <div ng-show="logo1Edit" >
+                <p>
+                    <input class="w3-input w3-border" type="file" onchange="logo1Upload()" id="logo1FileId" name="files[]"/>
+                    <br>
+                    <button class="w3-btn w3-red w3-round-large w3-small" ng-click = "updateLogo1()" >Update</button>
+                </p>
+            </div>
+
+            <br>
+            <br>
+            Logo2
+            <br>
+            <img height="100" width="100" id="brandLogo2" >
+            <br>
+            <button class="w3-btn w3-red w3-round-large w3-small" ng-show ="!logo2Edit" ng-click = "logo2Edit = !logo2Edit" >Add/Edit</button>
+            <div ng-show="logo2Edit" >
+                <p>
+                    <input class="w3-input w3-border" type="file" onchange="logo2Upload()" id="logo2FileId" name="files[]"/>
+                    <br>
+                    <button class="w3-btn w3-red w3-round-large w3-small" ng-click = "updateLogo2()" >Update</button>
+                </p>
+            </div>
+        </div>
+
+    </body>
+</html>

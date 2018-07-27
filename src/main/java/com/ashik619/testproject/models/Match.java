@@ -7,7 +7,7 @@ import java.util.Date;
 @Table(name = "matches")
 public class Match {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -34,6 +34,9 @@ public class Match {
 
     @Column(name="match_result")
     private String matchResult;
+
+    @Column(name = "match_slot")
+    private String matchSlot;
 
     public Long getId() {
         return id;
@@ -106,4 +109,13 @@ public class Match {
     public void setMatchResult(String matchResult) {
         this.matchResult = matchResult;
     }
+
+    public String getMatchSlot() {
+        return matchSlot;
+    }
+
+    public void setMatchSlot(String matchSlot) {
+        this.matchSlot = matchSlot;
+    }
+
 }
