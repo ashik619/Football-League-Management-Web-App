@@ -5,6 +5,7 @@ var config = {
     storageBucket: "corporate-super-league.appspot.com"
 };
 var firebaseApp;
+var resultCode;
 try {
   firebaseApp = firebase.app();
 }catch(e) {
@@ -46,11 +47,6 @@ angular.module('mainApp')
         });
         $scope.finishMatch = function(){
             if($scope.result){
-                console.log($scope.result);
-                if(isNaN($scope.result)) {
-                    console.log("not num");
-                    }
-                var resultCode = "D";
                 switch(parseInt($scope.result)){
                     case 0 :
                        resultCode = "AW";
@@ -65,7 +61,6 @@ angular.module('mainApp')
                        break;
 
                 }
-                console.log(resultCode);
                 $http.post('/api/match/changeStatus/'+$scope.matchA.id,
                                                 {
                                                 'type' : 'endMatch',
@@ -154,21 +149,22 @@ angular.module('mainApp')
              });
              $scope.finishMatch = function(){
                  if($scope.result){
-                     var resultCode = "D"
-                     switch($scope.result){
-                         case 0:{
+                     console.log("result",$scope.result);
+                     switch(parseInt($scope.result)){
+                         case 0 :
                             resultCode = "AW";
                             break;
-                         }
-                         case 1:{
+
+                         case 1 :
                             resultCode = "BW";
                             break;
-                         }
-                         case 2:{
+
+                         case 2 :
                             resultCode = "D";
                             break;
-                         }
+
                      }
+                     console.log("r code",resultCode);
                      $http.post('/api/match/changeStatus/'+$scope.matchB.id,
                                                      {
                                                      'type' : 'endMatch',

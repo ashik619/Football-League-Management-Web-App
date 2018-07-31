@@ -9,7 +9,7 @@
 .settings
 .springBeans
 .sts4-cache
-
+*.csv
 ### IntelliJ IDEA ###
 .idea
 *.iws
